@@ -1,28 +1,68 @@
 import galleryItems from './gallery-items.js';
 
+//               Variables
+
 const galleryRef = document.querySelector('.js-gallery');
 
-const openModalRef = document.querySelector('.lightbox');
+const modalWindowRef = document.querySelector('.lightbox__overlay');
+
+const openModalRef = document.querySelector('.js-lightbox');
+
+const closeBtnModalRef = document.querySelector('[data-action="close-lightbox"]');
+
+const imgModalRef = document.querySelector('.lightbox__image');
+
+
+//               Functions
+
+function createListPreviewGalleryMarkup(items) {
+  return items.map(item => `<li class="gallery__item"><a class="gallery__link"><img class="gallery__image" src="${item.preview}" data-source="${item.original}" alt="${item.description}"/></a></li>`).join('');
+}
 
 const listItemsMarkup = createListPreviewGalleryMarkup(galleryItems);
 
-function createListPreviewGalleryMarkup(items) {
-  return items.map(item => `<li><img src="${item.preview}" alt="${item.description}" width="340"/></li>`).join('');
-}
-
-// function createListOriginalGalleryMarkup(items) {
-//   return items.map(item => `<li><img src="${item.original}" width="1280"/></li>`).join('');
-// }
-
 galleryRef.innerHTML = listItemsMarkup;
 
-galleryRef.addEventListener('click', onClick);
-
-function onClick(e) {
+function onOpenModalClick(e) {
+  e.preventDefault();
+  window.addEventListener('keydown', onKeyEscCloseModal);
   if (e.target.nodeName !== 'IMG') {
     return;
   }
   openModalRef.classList.add('is-open');
-  galleryRef.li.width = 1280;
+// console.log(e.target);
+  imgModalRef.src = e.target.dataset.source;
+  imgModalRef.alt = e.target.alt;
+console.log(imgModalRef.alt);
+}
+
+function onCloseModalClick(e) {
+  window.removeEventListener('keydown', onKeyEscCloseModal);
+
+  openModalRef.classList.remove('is-open');
+  imgModalRef.src = '';
+  imgModalRef.alt = '';
 
 }
+
+function onBackdropClose(e) {
+  if (e.currentTarget === e.target) {
+    onCloseModalClick();
+  }
+}
+
+function onKeyEscCloseModal(e) {
+  if (e.code === 'Escape') {
+    onCloseModalClick();
+  }
+}
+
+//               EventListener
+
+galleryRef.addEventListener('click', onOpenModalClick);
+
+closeBtnModalRef.addEventListener('click', onCloseModalClick);
+
+modalWindowRef.addEventListener('click', onBackdropClose);
+
+// window.addEventListener('keydown', onChangePhoto);
