@@ -10,12 +10,13 @@ const openModalRef = document.querySelector('.js-lightbox');
 
 const closeBtnModalRef = document.querySelector('[data-action="close-lightbox"]');
 
-const imgGalleryRef = document.querySelector('.gallery__image');
+// const imgGalleryRef = document.querySelector('.gallery__image');
 
 const imgModalRef = document.querySelector('.lightbox__image');
 
 
 //               Functions
+
 
 function createListPreviewGalleryMarkup(items) {
   return items.map(item => `<li class="gallery__item"><a class="gallery__link" href="${item.original}"><img class="gallery__image" src="${item.preview}" data-source="${item.original}" alt="${item.description}"/></a></li>`).join('');
@@ -23,7 +24,8 @@ function createListPreviewGalleryMarkup(items) {
 
 const listItemsMarkup = createListPreviewGalleryMarkup(galleryItems);
 
-galleryRef.innerHTML = listItemsMarkup;
+galleryRef.insertAdjacentHTML("afterbegin", listItemsMarkup);
+// galleryRef.innerHTML = listItemsMarkup;
 
 // console.log(listItemsMarkup);
 
