@@ -10,10 +10,7 @@ const openModalRef = document.querySelector('.js-lightbox');
 
 const closeBtnModalRef = document.querySelector('[data-action="close-lightbox"]');
 
-// const imgGalleryRef = document.querySelector('.gallery__image');
-
 const imgModalRef = document.querySelector('.lightbox__image');
-
 
 //               Functions
 
@@ -25,13 +22,12 @@ function createListPreviewGalleryMarkup(items) {
 const listItemsMarkup = createListPreviewGalleryMarkup(galleryItems);
 
 galleryRef.insertAdjacentHTML("afterbegin", listItemsMarkup);
-// galleryRef.innerHTML = listItemsMarkup;
-
-// console.log(listItemsMarkup);
 
 function onOpenModalClick(e) {
   e.preventDefault();
   window.addEventListener('keydown', onKeyEscCloseModal);
+  window.addEventListener('keydown', keyboardPress);
+
   if (e.target.nodeName !== 'IMG') {
     return;
   }
@@ -62,6 +58,31 @@ function onKeyEscCloseModal(e) {
   }
 }
 
+
+const UrlsArr = galleryItems.map((el) => el.original);
+function keyboardPress(event) {
+  if (event.code === "ArrowRight") {
+    for (let i = 0; i < UrlsArr.length; i += 1) {
+      if (imgModalRef.src === UrlsArr[8]) {
+        imgModalRef.src = `${UrlsArr[0]}`;
+        return;
+      } else if (imgModalRef.src === UrlsArr[i]) {
+        imgModalRef.src = `${UrlsArr[i + 1]}`;
+        return;
+      }
+    }
+  } else if (event.code === "ArrowLeft") {
+    for (let i = 0; i < UrlsArr.length; i += 1) {
+      if (imgModalRef.src === UrlsArr[0]) {
+        imgModalRef.src = `${UrlsArr[8]}`;
+        return;
+      } else if (imgModalRef.src === UrlsArr[i]) {
+        imgModalRef.src = `${UrlsArr[i - 1]}`;
+        return;
+      }
+    }
+  }
+}
 
 //               EventListeners
 
